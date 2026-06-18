@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Header.module.css";
+import ExamplesMenu from "./ExamplesMenu";
 
 export default function Header() {
   return (
@@ -19,9 +20,7 @@ export default function Header() {
         <Link href="/" className={styles.navLink}>
           Home
         </Link>
-        <Link href="/about" className={styles.navLink}>
-          About
-        </Link>
+        <ExamplesMenu />
       </nav>
     </header>
   );
