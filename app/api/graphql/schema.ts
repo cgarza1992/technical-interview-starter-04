@@ -58,7 +58,7 @@ export const schema = createSchema({
       hello: String!
       departments: [Department!]!
       department(id: ID!): Department
-      products: [Product!]!
+      products(search: String): [Product!]!
       product(id: String!): Product
     }
   `,
@@ -68,7 +68,12 @@ export const schema = createSchema({
       departments: () => departments,
       department: (_parent: unknown, args: { id: string }) =>
         departments.find((d) => d.id === args.id) ?? null,
-      products: () => products,
+      products: ( _parent: unknown, args: {search: string}) => products.filter(
+        (product) => {
+          args.search ? product.fullDisplayName.includes(args.search) : true;
+        }
+      ),
+      
       product: (_parent: unknown, args: { id: string }) =>
         products.find((p) => p.id === args.id) ?? null,
     },
