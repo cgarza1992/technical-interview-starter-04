@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import styles from "./SearchBar.module.css"
 
 type SearchBarProps = {
     onSearch: (query: string) => void   // parent decides what "search" does
@@ -20,14 +21,15 @@ export default function SearchBar({ onSearch, placeholder = "Search..." }: Searc
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
             <input
                 type="text"
                 value={query}                // value from state => controlled
                 onChange={handleChange}      // every keystroke updates state
                 placeholder={placeholder}
+                className={styles.input}
             />
-            <button type="submit">Search</button>
+            <button type="submit" className={styles.button}>Search</button>
         </form>
     )
 }

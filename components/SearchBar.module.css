@@ -1,0 +1,39 @@
+.form {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+}
+
+.input {
+  flex: 1 1 auto;
+  padding: 0.625rem 0.875rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.input:focus {
+  border-color: var(--heb-red);
+  box-shadow: 0 0 0 3px rgba(225, 37, 27, 0.15);
+}
+
+.button {
+  flex: 0 0 auto;
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--heb-red);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.button:hover {
+  background: rgb(190, 30, 22);
+}
