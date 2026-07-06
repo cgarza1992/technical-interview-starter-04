@@ -1,13 +1,12 @@
-# H-E-B Interview Starter
+# 📌 Note on this submission
 
-## Note on this submission
+> [!IMPORTANT]
+> **In the interview I was building toward a live, server-backed product search but ran
+> out of time with it half-wired.** Leaving it broken didn't sit right with me — I wanted
+> to finish communicating the approach I was sketching, so **I completed it afterward, on
+> my own time.**
 
-In the interview I was building toward a live, server-backed product search but ran out
-of time with it half-wired. Leaving it broken didn't sit right with me — I wanted to
-finish communicating the approach I was sketching, so I completed it afterward on my own
-time.
-
-The commit history walks through it one working state at a time:
+The commit history walks through it **one working state at a time**:
 
 1. Fix the resolver bug (a `.filter` callback missing its `return`)
 2. Extract a client component; the server passes the initial products as props
@@ -21,9 +20,11 @@ then hands it to a `"use client"` component that drives live search through the 
 responses from overwriting newer results. Filtering stays on the server (the resolver);
 the client never filters locally.
 
-The search lives at `/examples/products`. Happy to walk through any of it.
+### ➡️ Try it live at `/examples/products` — happy to walk through any of it.
 
 ---
+
+# H-E-B Interview Starter
 
 A minimal [Next.js](https://nextjs.org) (App Router) starter site for the technical interview.
 
