@@ -69,9 +69,7 @@ export const schema = createSchema({
       department: (_parent: unknown, args: { id: string }) =>
         departments.find((d) => d.id === args.id) ?? null,
       products: ( _parent: unknown, args: {search: string}) => products.filter(
-        (product) => {
-          args.search ? product.fullDisplayName.includes(args.search) : true;
-        }
+        (product) => args.search ? product.fullDisplayName.includes(args.search) : true
       ),
       
       product: (_parent: unknown, args: { id: string }) =>
