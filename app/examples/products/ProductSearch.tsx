@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import panel from "./ProductsList.module.css";
@@ -27,31 +27,57 @@ const PRODUCTS_QUERY = /* GraphQL */ `
 
 
 export default function ProductSearch({products}: { products: Product[] }) {
+    const [query, setQuery] = useState("");
     const [results, setResults ] = useState<Product[]>( products ); // Seed from the props.
+    const [isLive, setIsLive] = useState(true);
 
-    /**
-     * Runs a product search against the GraphQL API and replaces the visible list.
-     * Filtering happens on the server via the `search` argument — this just swaps in
-     * whatever the resolver returns (no client-side filtering).
-     *
-     * @param query - the user's search text, sent as the GraphQL `search` variable
-     */
-    async function handleSearch(query: string) {
+    useEffect( () => {
+        const controller = new AbortController();
+        const timeout = setTimeout( async () => {
+            try {
+                const res = await fetch("/api/graphql", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query: PRODUCTS_QUERY, variables: { search: query } }),
+                    signal: controller.signal,
+                });
 
-    const res = await fetch("/api/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: PRODUCTS_QUERY, variables: { search: query } }),
-    });
+                const json = await res.json();
 
-    const json = await res.json();
+                setResults(json.data.products);
+            } catch (err ) {
+                if(err instanceof DOMException && err.name === "AbortError" ) return; // Expected on cancel.
+                throw err; // Real error for everything else.
+            }
+        }, 300);
 
-    setResults(json.data.products);
-    }
+        return () => {
+            clearTimeout(timeout);
+            controller.abort();
+        }
+    }, [query] );
 
     return (
         <div>
-            <SearchBar onSearch={handleSearch} placeholder="Search products..." />
+            <div className={panel.toggle} role="group" aria-label="Search mode">
+                <button
+                    type="button"
+                    className={`${panel.toggleButton} ${isLive ? panel.toggleActive : ""}`}
+                    onClick={() => setIsLive(true)}
+                    aria-pressed={isLive}
+                >
+                    Live
+                </button>
+                <button
+                    type="button"
+                    className={`${panel.toggleButton} ${!isLive ? panel.toggleActive : ""}`}
+                    onClick={() => setIsLive(false)}
+                    aria-pressed={!isLive}
+                >
+                    Submit
+                </button>
+            </div>
+            <SearchBar live={isLive} onSearch={(q) => setQuery(q)} placeholder="Search products..." />
             <ul className={panel.list}>
             {results.map((product) => {
                 const thumbnail = product.thumbnailImageUrls?.[0]?.url;
