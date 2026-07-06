@@ -68,9 +68,12 @@ export const schema = createSchema({
       departments: () => departments,
       department: (_parent: unknown, args: { id: string }) =>
         departments.find((d) => d.id === args.id) ?? null,
-      products: ( _parent: unknown, args: {search: string}) => products.filter(
-        (product) => args.search ? product.fullDisplayName.includes(args.search) : true
-      ),
+      products: ( _parent: unknown, args: {search: string}) => {
+        const query = args.search?.trim().toLowerCase();
+        return products.filter( (product) => 
+          query ? product.fullDisplayName.toLowerCase().includes(query): true
+        );
+      },
       
       product: (_parent: unknown, args: { id: string }) =>
         products.find((p) => p.id === args.id) ?? null,
