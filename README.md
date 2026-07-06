@@ -1,5 +1,30 @@
 # H-E-B Interview Starter
 
+## Note on this submission
+
+In the interview I was building toward a live, server-backed product search but ran out
+of time with it half-wired. Leaving it broken didn't sit right with me — I wanted to
+finish communicating the approach I was sketching, so I completed it afterward on my own
+time.
+
+The commit history walks through it one working state at a time:
+
+1. Fix the resolver bug (a `.filter` callback missing its `return`)
+2. Extract a client component; the server passes the initial products as props
+3. Server-backed search via the GraphQL `search` arg (on submit)
+4. Live, debounced, race-safe as-you-type search
+5. A Live/Submit mode toggle + trimmed, case-insensitive matching
+
+**Architecture:** the Server Component fetches the initial list for a fast first paint,
+then hands it to a `"use client"` component that drives live search through the same
+`search` argument — debounced, with an `AbortController` to prevent out-of-order
+responses from overwriting newer results. Filtering stays on the server (the resolver);
+the client never filters locally.
+
+The search lives at `/examples/products`. Happy to walk through any of it.
+
+---
+
 A minimal [Next.js](https://nextjs.org) (App Router) starter site for the technical interview.
 
 It includes a homepage, two "Departments" pages that demonstrate **client-side** and
