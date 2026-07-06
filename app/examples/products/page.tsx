@@ -1,8 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import { headers } from "next/headers";
 import styles from "../../page.module.css";
 import panel from "./ProductsList.module.css";
+import ProductSearch from "./ProductSearch";
 
 type Product = {
   id: string;
@@ -73,45 +72,7 @@ export default async function ProductsPage() {
 
       <section className={panel.panel}>
         <h2 className={panel.heading}>Taco ingredients</h2>
-        <ul className={panel.list}>
-          {products.map((product) => {
-            const thumbnail = product.thumbnailImageUrls?.[0]?.url;
-            return (
-              <li key={product.id}>
-                <Link
-                  href={`/examples/products/${product.id}`}
-                  className={panel.item}
-                >
-                  {thumbnail ? (
-                    <Image
-                      className={panel.thumb}
-                      src={thumbnail}
-                      alt={product.fullDisplayName}
-                      width={56}
-                      height={56}
-                    />
-                  ) : (
-                    <span className={panel.thumb} aria-hidden="true" />
-                  )}
-                  <span className={panel.info}>
-                    <span className={panel.name}>
-                      {product.fullDisplayName}
-                    </span>
-                    <span className={panel.meta}>
-                      {product.productCategory?.name ?? "Uncategorized"}
-                      {product.brand?.name ? ` · ${product.brand.name}` : ""}
-                    </span>
-                  </span>
-                  <span className={panel.price}>
-                    {product.price != null
-                      ? `$${product.price.toFixed(2)}`
-                      : "—"}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <ProductSearch products={products} />
       </section>
     </div>
   );
